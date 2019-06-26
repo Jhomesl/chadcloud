@@ -56,14 +56,14 @@ module.exports = {
   },
 
   recover_email: async () => {
-
+    return true
   },
 
   recover_password: async () => {
-
+    return true
   },
 
   verify_email: async () => {
-
+    return true
   }
 }

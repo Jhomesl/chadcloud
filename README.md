@@ -50,6 +50,23 @@ Application initialized. Node environment -> test.
 ✔  functions: authentication: http://localhost:5001/chadnetworkbase/us-central1/authentication
 ```
 
+Emulating a `production` Firebase environment, the above functions urls will
+**not** work. Instead, replace
+
+```bash
+http://localhost:5001/chadnetworkbase/us-central1
+```
+
+with
+
+```bash
+http://localhost:5000
+```
+
+Alternatively, running `npm run serve` will allow you to access the Cloud
+Functions from their standard Cloud urls. However, requests using
+`http://localhost:5000` will **not** work.
+
 ### Making Requests
 
 **Attention: This section is under construction.**

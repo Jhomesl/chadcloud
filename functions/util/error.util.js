@@ -96,7 +96,7 @@ module.exports = {
 
     const { name, message, code, className, data, errors } = context.error
 
-    console.error(`${name} error on path /${context.path}: ${message} ->`, {
+    console.error(`${name}: ${message} ->`, {
       code, name, message, className, data, errors
     })
 

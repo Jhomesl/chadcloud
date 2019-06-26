@@ -6,13 +6,11 @@
   "scripts": {
     "functions-install": "cd functions && npm install && cd ..",
     "preinstall": "rm -rf node_modules && rm -rf node_modules/functions",
-    "pretest": "npm install",
-    "prestart": "npm install",
     "dev": "NODE_ENV=development nodemon ./functions/index.js",
     "test": "NODE_ENV=test jest --detectOpenHandles --passWithNoTests",
     "serve": "NODE_ENV=test firebase serve --only functions,hosting",
-    "start": "NODE_ENV=production npm run serve",
-    "deploy": "firebase deploy --only functions,hosting"
+    "start": "NODE_ENV=production firebase serve --only functions,hosting",
+    "deploy": "NODE_ENV=production firebase deploy --only functions,hosting"
   },
   "repository": {
     "type": "git",
