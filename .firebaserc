@@ -1,0 +1,26 @@
+{
+  "projects": {
+    "default": "chadnetworkbase"
+  },
+  "targets": {
+    "chadnetworkbase": {
+      "database": {
+        "core": [
+          "https://chadnetworkbase.firebaseio.com"
+        ],
+        "locations": [
+          "https://chadnetworkbase-locations.firebaseio.com"
+        ],
+        "messages": [
+          "https://chadnetworkbase-messages.firebaseio.com"
+        ],
+        "profiles": [
+          "https://chadnetworkbase-users.firebaseio.com"
+        ],
+        "rooms": [
+          "https://chadnetworkbase-rooms.firebaseio.com"
+        ]
+      }
+    }
+  }
+}
