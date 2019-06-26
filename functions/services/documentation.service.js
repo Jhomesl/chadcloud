@@ -19,7 +19,10 @@ class Documentation {
     this.app = app
     this.path = path
 
-    if (this.app.get('environment') !== 'production') {
+    // Node environment
+    this.environment = this.app.get('node_env')
+
+    if (this.environment === 'development') {
       console.info(`Initialized Documentation service on path /${path}.`)
     }
   }

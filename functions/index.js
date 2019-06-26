@@ -13,11 +13,13 @@ const { ENVRIONMENT } = require('./constants')
  * @author Lexus Drumgold <lex@lexusdrumgold.design>
  */
 
-// ! Start server listening sequence if Node environment isn't production
-if (ENVRIONMENT === 'development') {
-  for (const name in Feathers) {
-    const app = Feathers[name]
+// ! Start server listening sequence or setup Feathers application
 
+for (const name in Feathers) {
+  const app = Feathers[name]
+  if (ENVRIONMENT !== 'development') {
+    app.setup()
+  } else {
     const host = app.get('host')
     const ports = app.get('ports')
 

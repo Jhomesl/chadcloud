@@ -29,9 +29,12 @@ class Authentication {
     this.api_key = this.app.get('firebase').apiKey
 
     // Utilities
-    this.utilities = app.get('utilities')
+    this.utilities = this.app.get('utilities')
 
-    if (this.app.get('environment') !== 'production') {
+    // Node environment
+    this.environment = this.app.get('node_env')
+
+    if (this.environment === 'development') {
       console.info(`Initialized Authentication service on path /${path}.`)
     }
   }
@@ -50,7 +53,7 @@ class Authentication {
    * @throws {NotAuthenticated}
    */
   async create(data, params) {
-    const { create_custom_token } = this.utilities.authentication
+    const { create_custom_token } = this.utilities.auth
 
     try {
       return await create_custom_token(this.authentication, params.user.uid)
@@ -73,13 +76,13 @@ class Authentication {
    * action handler pages to your users
    * @param {string} params.query.mode - The user management action to be
    * completed. resetPassword | recoverEmail | verifyEmail
-   * @returns {Promise<string>} Custom login token
+   * @returns {Promise<boolean>}
    * @throws {NotAuthenticated}
    */
   async find(params) {
     const {
       recover_email, recover_password, verify_email
-    } = this.utilities.authentication
+    } = this.utilities.auth
 
     try {
       const { mode, actionCode, continueUrl, lang } = params.query
@@ -89,6 +92,8 @@ class Authentication {
       if (mode === 'recoverEmail') return await recover_email(...request)
       if (mode === 'resetPassword') return await recover_password(...request)
       if (mode === 'verifyEmail') return await verify_email(...request)
+
+      return true
     } catch (err) {
       throw err
     }

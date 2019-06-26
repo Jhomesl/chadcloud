@@ -16,8 +16,8 @@
     "appId": "1:544876102310:web:6d45283722782e88"
   },
   "routes": {
-    "accounts": "accounts",
-    "authentication": "authentication",
-    "docs": "docs"
+    "accounts": "/",
+    "authentication": "/",
+    "docs": "/"
   }
 }

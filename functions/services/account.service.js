@@ -27,9 +27,9 @@ class Account {
     this.utilities = this.app.get('utilities')
 
     // Node environment
-    this.environment = this.app.get('environment')
+    this.environment = this.app.get('node_env')
 
-    if (this.environment !== 'production') {
+    if (this.environment === 'development') {
       console.info(`Initialized Account service on path /${path}.`)
     }
   }
