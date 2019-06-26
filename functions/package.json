@@ -1,0 +1,62 @@
+{
+  "name": "@chad/cloud",
+  "description": "Built with Google Firebase, Chad is a location based chatroom service that allows users to start and join trending chatrooms in their area. Chad Cloud contains Chad's Firebase Cloud Functions, hosting our Authentication, Account, Documentation, and Location microservices.",
+  "version": "1.0.0",
+  "author": "Lexus Drumgold <lex@lexusdrumgold.design> (https://lexusdrumgold.design)",
+  "scripts": {
+    "preinstall": "rm -rf node_modules",
+    "prestart": "npm install",
+    "start": "firebase serve --only functions,hosting"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chad-app/chadcloud.git"
+  },
+  "keywords": [
+    "chad",
+    "chatrooms",
+    "feathersjs",
+    "firebase-admin",
+    "messaging"
+  ],
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/chad-app/chadcloud/issues"
+  },
+  "homepage": "https://github.com/chad-app/chadcloud#README",
+  "dependencies": {
+    "@feathersjs/configuration": "^2.0.6",
+    "@feathersjs/errors": "^3.3.6",
+    "@feathersjs/express": "^1.3.1",
+    "@feathersjs/feathers": "^3.3.1",
+    "@google/maps": "^0.5.5",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "feathers-hooks-common": "^4.20.7",
+    "feathers-hooks-validate-joi": "^2.0.0",
+    "firebase-admin": "^7.3.0",
+    "firebase-functions": "^3.0.2",
+    "joi": "^14.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.1",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "eslintConfig": {
+    "extends": "standard",
+    "rules": {
+      "camelcase": 0,
+      "space-before-function-paren": 0
+    }
+  },
+  "eslintIgnore": [
+    "/node_modules/*"
+  ],
+  "engines": {
+    "node": "8"
+  }
+}

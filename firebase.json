@@ -1,0 +1,40 @@
+{
+  "functions": {
+    "source": "functions",
+    "predeploy": [
+      "NODE_ENV=production npm run functions-install"
+    ]
+  },
+  "hosting": {
+    "public": "functions/public",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "https://github.com/chad-app/chadcloud",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/authentication{,/**}",
+        "function": "authentication"
+      },
+      {
+        "source": "/accounts{,/**}",
+        "function": "accounts"
+      },
+      {
+        "source": "/docs{,/**}",
+        "function": "documentation"
+      }
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/tests/**"
+    ]
+  }
+}
