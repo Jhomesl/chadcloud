@@ -23,53 +23,11 @@ provide quality communication services without sacrificing user privacy and
 trust.
 
 Chad Cloud contains Chad's Firebase Cloud Functions, hosting our
-`Authentication`, `Accounts`, `Documentation`, and `Location` microservices.
+`Authentication`, `Accounts`, and `Documentation`, microservices.
 
 ## Usage
 
-Run `npm start` in the project directory. This will build and launch a local
-production version of our cloud functions. When this is complete, you'll see the
-following in your terminal:
-
-```bash
-i  functions: Preparing to emulate functions.
-i  hosting: Serving hosting files from: functions/public
-✔  hosting: Local server: http://localhost:5000
-Warning: You're using Node.js v11.9.0 but the Google Cloud Functions runtime is only available in Node.js 6 (Deprecated), Node.js 8, and Node.js 10 (Beta). Therefore, results from running emulated functions may not match production behavior.
-info: Application initialized. Node environment -> test.
-info: Application initialized. Node environment -> test.
-Application initialized. Node environment -> test.
-info: Application initialized. Node environment -> test.
-info: Application initialized. Node environment -> test.
-info: Application initialized. Node environment -> test.
-info: Application initialized. Node environment -> test.
-Application initialized. Node environment -> test.
-Application initialized. Node environment -> test.
-✔  functions: accounts: http://localhost:5001/chadnetworkbase/us-central1/accounts
-✔  functions: documentation: http://localhost:5001/chadnetworkbase/us-central1/documentation
-✔  functions: authentication: http://localhost:5001/chadnetworkbase/us-central1/authentication
-```
-
-Emulating a `production` Firebase environment, the above functions urls will
-**not** work. Instead, replace
-
-```bash
-http://localhost:5001/chadnetworkbase/us-central1
-```
-
-with
-
-```bash
-http://localhost:5000
-```
-
-Alternatively, running `npm run serve` will allow you to access the Cloud
-Functions from their standard Cloud urls. However, requests using
-`http://localhost:5000` will **not** work.
-
-### Making Requests
-
-**Attention: This section is under construction.**
+Please view the [Chad Cloud Wiki][1] for information on making requests.
 
 ## Contributing
 
@@ -83,12 +41,9 @@ our deployment procedure, please view our [Deployment Guide](DEPLOYMENT.md).
 
 ## Built With
 
-- [Feathers][1]
-- [Firebase Admin][2]
-- [Firebase Cloud Functions][3]
-- [Google Maps][4]
+- [Feathers][2] - A REST and real-time API layer for Node.js, React Native and the browser
+- [Google Firebase][3] - Mobile development platform
 
-[1]: https://docs.feathersjs.com/
-[2]: https://firebase.google.com/docs/reference/admin
-[3]: https://firebase.google.com/docs/reference/functions
-[4]: https://www.npmjs.com/package/@google/maps
+[1]: https://github.com/chad-app/chadcloud/wiki
+[2]: https://docs.feathersjs.com/
+[3]: https://firebase.google.com/
