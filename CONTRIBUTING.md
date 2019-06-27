@@ -60,6 +60,36 @@ When you're ready to test your changes, you have two options:
 
 For generating test data, use [Mockaroo](https://mockaroo.com/).
 
+**Emulating Cloud Functions**
+When emulating the Cloud Functions to test your changes, you have two options:
+
+1. To make your functions accessible at
+   `http://localhost:5001/chadnetworkbase/us-central1/<FUNCTION_NAME>`, run `npm
+   run serve`.
+2. To make your functions accessible at `http://localhost:5000/<FUNCTION_NAME>`,
+   run **`npm start`**.
+
+Afterwards, you'll see the following in your terminal:
+
+```bash
+i  functions: Preparing to emulate functions.
+i  hosting: Serving hosting files from: functions/public
+✔  hosting: Local server: http://localhost:5000
+Warning: You're using Node.js v11.9.0 but the Google Cloud Functions runtime is only available in Node.js 6 (Deprecated), Node.js 8, and Node.js 10 (Beta). Therefore, results from running emulated functions may not match production behavior.
+info: Application initialized. Node environment -> test.
+info: Application initialized. Node environment -> test.
+Application initialized. Node environment -> test.
+info: Application initialized. Node environment -> test.
+info: Application initialized. Node environment -> test.
+info: Application initialized. Node environment -> test.
+info: Application initialized. Node environment -> test.
+Application initialized. Node environment -> test.
+Application initialized. Node environment -> test.
+✔  functions: accounts: http://localhost:5001/chadnetworkbase/us-central1/accounts
+✔  functions: documentation: http://localhost:5001/chadnetworkbase/us-central1/documentation
+✔  functions: authentication: http://localhost:5001/chadnetworkbase/us-central1/authentication
+```
+
 ## Making a Pull Request
 
 **Note: Before creating a new branch and creating a pull request for your
