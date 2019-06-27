@@ -23,7 +23,7 @@ provide quality communication services without sacrificing user privacy and
 trust.
 
 Chad Cloud contains Chad's Firebase Cloud Functions, hosting our
-`Authentication`, `Accounts`, and `Documentation`, microservices.
+`Authentication`, `Accounts`, and `Documentation` microservices.
 
 ## Usage
 
