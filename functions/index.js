@@ -36,5 +36,5 @@ for (const name in Feathers) {
 module.exports = {
   accounts: functions.https.onRequest(Feathers.accounts),
   authentication: functions.https.onRequest(Feathers.authentication),
-  documentation: functions.https.onRequest(Feathers.documentation)
+  docs: functions.https.onRequest(Feathers.documentation)
 }

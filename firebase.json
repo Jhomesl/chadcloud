@@ -32,7 +32,7 @@
       },
       {
         "source": "/docs{,/**}",
-        "function": "documentation"
+        "function": "docs"
       }
     ],
     "ignore": [
