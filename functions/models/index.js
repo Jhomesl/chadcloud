@@ -11,5 +11,5 @@ const globals = require('./global.model')
 module.exports = {
   account,
   global: globals,
-  options: { abortEarly: false, escapeHtml: true, stripUnknown: true }
+  options: { escapeHtml: true, stripUnknown: true }
 }

@@ -18,25 +18,15 @@ describe('Account service', () => {
 
   it('It does not create an account if the payload is invalid.', async () => {
     try {
-      await service.create(Mock.data[2])
-    } catch (err) {
-      expect(err.name).toBe('BadRequest')
-    }
-
-    try {
-      await service.create(Mock.data[7])
-    } catch (err) {
-      expect(err.name).toBe('BadRequest')
-    }
-
-    try {
-      await service.create(Mock.data[8])
+      expect(await service.create()).toThrow()
+      expect(await service.create(Mock.data[7])).toThrow()
+      expect(await service.create(Mock.data[8])).toThrow()
     } catch (err) {
       expect(err.name).toBe('BadRequest')
     }
   })
 
-  it('Creates and deletes seven new accounts.', async () => {
+  it('Creates and deletes eight accounts.', async () => {
     let created = []
     let rejected = 0
 
@@ -53,7 +43,9 @@ describe('Account service', () => {
 
       return Promise.all(created.map(async account => {
         try {
-          await service.remove(account.uid)
+          // Because we validate our payload and query before authenticating,
+          // a query must be present. The id_token itself doesn't matter
+          await service.remove(account.uid, { query: { id_token: 'server' } })
           deleted++
         } catch (err) {
           console.error('Error deleting account ->', err)

@@ -94,11 +94,14 @@ module.exports = {
   handle_service_error: async (context, report = false) => {
     if (!context) throw new BadRequest('Feathers context is required.')
 
+    if (context.error.name === 'Error') {
+      const { name, message, code, className, data, errors } = context.error
+      context.error = new BadRequest(message.includes('data object must be provided') ? 'Payload required.' : message, { data, errors })
+    }
+
     const { name, message, code, className, data, errors } = context.error
 
-    console.error(`${name}: ${message} ->`, {
-      code, name, message, className, data, errors
-    })
+    console.error(`${name}: ${message} ->`, { data, errors })
 
     if (report) {
       // TODO: Send error report to error service
@@ -124,9 +127,11 @@ module.exports = {
    *
    * @param {string} message - Error message
    * @param {Error[]} errors - Array of Joi errors
-   * @returns {BadRequest}
+   * @param {boolean} auth - True if error should be type NotAuthenticated
+   * @returns {BadRequest | NotAuthenticated}
    */
-  get_model_error: (message, errors) => {
-    return new BadRequest(message, { value: errors[0].context.value })
+  get_model_error: (message, errors, auth = false) => {
+    const e = { value: errors[0].context.value || null }
+    return auth ? new NotAuthenticated(message, e) : new BadRequest(message, e)
   }
 }

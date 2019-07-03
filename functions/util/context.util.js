@@ -3,6 +3,7 @@ const { BadRequest, NotAuthenticated } = require('@feathersjs/errors')
 
 // Utility functions
 const { authenticate } = require('./auth.util')
+const { validate_schema } = require('./global.util')
 
 /**
  * @file Feathers Context utilities
@@ -13,7 +14,7 @@ const { authenticate } = require('./auth.util')
 module.exports = {
   /**
    * Authenticates a request. If admin is true, the function will check if user
-   * is an admin. Admin defaults to true.
+   * is an admin. Admin defaults to false.
    *
    * @async
    * @param {feathers.Context} context - Feathers context object
@@ -25,11 +26,11 @@ module.exports = {
    * @returns {Promise<object>} Updated context object
    * @throws {NotAuthenticated}
    */
-  authenticate: async (context, admin = true) => {
+  authenticate: async (context, admin = false) => {
     let { app, params, id } = context
 
     // Don't authenticate if call is from the server
-    if (!params.provider) return context
+    if (!params || (params && !params.provider)) return context
 
     const authentication = app.get('firebase/admin').auth()
 
@@ -44,6 +45,30 @@ module.exports = {
       return context
     } catch (err) {
       err.data.errors = { id_token: params.query.token }
+      throw err
+    }
+  },
+
+  /**
+   * Validates query and payload schema.
+   * 
+   * @param {Feathers.Context} context - Feathers context object
+   * @param {object} context.data - Payload to validate
+   * @param {object} context.params - Additional info for the service method
+   * @param {object} context.params.query - Query to validate
+   * @param {Joi.Schema} schema - Joi schema
+   * @param {object} options - Joi options
+   */
+  check_data: async (context, schema, options) => {
+    try {
+      const req = { query: context.params.query, data: context.data }
+      const { query, data } = validate_schema(req, schema, options)
+
+      context.params.query = query
+      context.data = data
+
+      return context
+    } catch (err) {
       throw err
     }
   },
@@ -105,6 +130,33 @@ module.exports = {
       return context
     } catch (err) {
       console.error('Reporting error ->', err)
+    }
+  },
+
+  /**
+   * Validates @see context.data and authenticates a user if @see auth is true.
+   * If @see admin is true and @see auth is true, the function will check if the
+   * user is an admin.
+   * 
+   * @param {Feathers.Context} context - Feathers context object
+   * @param {object} context.data - Payload to validate
+   * @param {object} context.params - Additional info for the service method
+   * @param {object} context.params.query - Query to validate
+   * @param {string} context.params.query.id_token - User id token
+   * @returns {object} Modified context object
+   */
+  precheck: async (context, type, method, auth = false, admin = false) => {
+    const { authenticate, check_data } = module.exports
+
+    const models = context.app.get('models')
+    const schema_type = models[type]
+    const schema = schema_type[method]
+
+    try {
+      context = check_data(context, schema, models.options)
+      return auth ? await authenticate(context, admin) : context
+    } catch (err) {
+      throw err
     }
   }
 }

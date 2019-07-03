@@ -2,8 +2,8 @@
   "options": {
     "count": {
       "total": 10,
-      "valid": 7,
-      "invalid": 3
+      "valid": 8,
+      "invalid": 2
     },
     "displayName": 20,
     "email": 5,
