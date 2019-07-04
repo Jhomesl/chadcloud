@@ -34,11 +34,6 @@ module.exports = {
       // Load app configuration
       application.configure(configuration())
 
-      const env = application.get('node_env')
-      if (env !== 'production') {
-        console.info(`Application initialized. Node environment -> ${env}.`)
-      }
-
       // Enable CORS and body parsing
       application.use(cors())
       application.use(express.json())

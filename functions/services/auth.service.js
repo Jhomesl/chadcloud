@@ -35,7 +35,8 @@ class Authentication {
     this.environment = this.app.get('node_env')
 
     if (this.environment === 'development') {
-      console.info(`Initialized Authentication service on path /${path}.`)
+      const url = `http://localhost:${this.app.get('ports').authentication}`
+      console.info(`Initialized Authentication service on ${url}/${path}.`)
     }
   }
 

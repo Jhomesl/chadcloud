@@ -30,7 +30,8 @@ class Account {
     this.environment = this.app.get('node_env')
 
     if (this.environment === 'development') {
-      console.info(`Initialized Account service on path /${path}.`)
+      const url = `http://localhost:${this.app.get('ports').accounts}`
+      console.info(`Initialized Account service on ${url}/${path}.`)
     }
   }
 

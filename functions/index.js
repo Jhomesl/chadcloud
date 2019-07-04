@@ -5,7 +5,7 @@ const functions = require('firebase-functions')
 const { Feathers } = require('./feathers')
 
 // Constants
-const { ENVRIONMENT } = require('./constants')
+const { ENVRIONMENT, PRODUCTION } = require('./constants')
 
 /**
  * @file Cloud Functions entry point
@@ -17,20 +17,15 @@ const { ENVRIONMENT } = require('./constants')
 
 for (const name in Feathers) {
   const app = Feathers[name]
+
   if (ENVRIONMENT !== 'development') {
     app.setup()
   } else {
-    const host = app.get('host')
-    const ports = app.get('ports')
-
-    app.listen(ports[name], () => {
-      if (host) {
-        const message = `${name} service started on http://%s:%d`
-        console.info(message, host, ports[name])
-      }
-    })
+    app.listen(app.get('ports')[name])
   }
 }
+
+if (!PRODUCTION) console.info('Started Cloud services.')
 
 // Export Firebase Functions
 module.exports = {
