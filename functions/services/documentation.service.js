@@ -23,7 +23,8 @@ class Documentation {
     this.environment = this.app.get('node_env')
 
     if (this.environment === 'development') {
-      console.info(`Initialized Documentation service on path /${path}.`)
+      const url = `http://localhost:${this.app.get('ports').documentation}`
+      console.info(`Initialized Documentation service on ${url}/${path}.`)
     }
   }
 

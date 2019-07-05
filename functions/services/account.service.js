@@ -30,7 +30,8 @@ class Account {
     this.environment = this.app.get('node_env')
 
     if (this.environment === 'development') {
-      console.info(`Initialized Account service on path /${path}.`)
+      const url = `http://localhost:${this.app.get('ports').accounts}`
+      console.info(`Initialized Account service on ${url}/${path}.`)
     }
   }
 
@@ -108,9 +109,11 @@ class Account {
    * @async
    * @param {object} params - Additional information for the service method
    * @param {object} params.query - Query parameters
-   * @param {object} params.query.id_token - Admin user's Firebase id token
+   * @param {string} params.query.id_token - Admin user's Firebase id token
+   * @param {object} params.query.page - Next page token if listing users
+   * @param {number} params.query.results - Max number of user results
    * @param {object} params.user - Authenticated user
-   * @param {object} params.user.uid - Authenticated user's uid
+   * @param {string} params.user.uid - Authenticated user's uid
    * @returns {Promise<admin.auth.ListUsersResult | object>} Object containing
    * list of users or Firebase user record
    * @throws {NotFound}

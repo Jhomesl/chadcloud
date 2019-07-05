@@ -11,6 +11,7 @@ module.exports = {
   boolean: Joi.boolean(),
   date: Joi.date().iso(),
   email: Joi.string().email(),
+  number: Joi.number(),
   string: Joi.string(),
   url: Joi.string().uri()
 }

@@ -11,7 +11,6 @@ const feathers = require('@feathersjs/feathers')
 
 module.exports = {
   before: {
-    all: context => process.env.NODE_ENV !== 'test' ? context : feathers.SKIP,
     create: context => {
       const { log_request } = context.app.get('utilities').context
       return log_request(context)
@@ -38,7 +37,6 @@ module.exports = {
     }
   },
   after: {
-    all: context => process.env.NODE_ENV !== 'test' ? context : feathers.SKIP,
     create: async context => {
       const { log_success } = context.app.get('utilities').context
       return log_success(context)
@@ -65,7 +63,6 @@ module.exports = {
     }
   },
   error: {
-    all: context => process.env.NODE_ENV !== 'test' ? context : feathers.SKIP,
     create: async context => {
       const { handle_service_error } = context.app.get('utilities').error
       await handle_service_error(context)
