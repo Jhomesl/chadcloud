@@ -174,8 +174,8 @@ class Account {
    * @param {string} id - Username
    * @param {object} data - New custom claim data
    * @param {string} data.birthday - User birthday in ISO 8601 date format
-   * @param {boolean} data.premium - True if user is premium user
-   * @param {string} data.type - Account type. BUSINESS | PERSONAL
+   * @param {boolean} data.business - True if business account
+   * @param {boolean} data.premium - True if user is a premium user
    * @param {object} params - Additional information for the service method
    * @param {object} params.query - Query parameters
    * @param {object} params.query.id_token - User's Firebase id token

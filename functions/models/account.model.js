@@ -99,8 +99,8 @@ module.exports = {
   patch: Joi.object().keys({
     query: AuthenticatedQuery,
     data: Joi.object().keys({
-      business: boolean.default(false).error(errors.business),
       birthday: date.required().error(errors.birthday),
+      business: boolean.default(false).error(errors.business),
       premium: boolean.default(false).error(errors.premium)
     }).required().error(errors.data, { self: true })
   }),
