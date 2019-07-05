@@ -39,8 +39,6 @@ describe('Account service', () => {
         rejected++
       }
     })).then(async completed => {
-      console.info('Created users ->', created)
-
       expect(rejected).toBe(Mock.options.count.invalid)
 
       /**
@@ -62,9 +60,13 @@ describe('Account service', () => {
 
           found_by_email.push(await service.find({ query: find_by_email }))
 
-          await service.remove(account.uid, { query })
+          try {
+            await service.remove(account.uid, { query })
+          } catch (err) {
+            console.error('Error deleting account ->', err)
+          }
         } catch (err) {
-          console.error('Error deleting account ->', err)
+          console.error('Error getting user by email ->', err)
         }
       })).then(async completed => {
         expect(found_by_email.length).toBe(list.users.length)
