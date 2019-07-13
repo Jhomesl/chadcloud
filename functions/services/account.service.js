@@ -71,8 +71,14 @@ class Account {
    * @throws {BadRequest}
    */
   async create(data, params) {
-    // ! New user will be disabled until they verify their email
-    data.disabled = true
+    /**
+     * In production, the user will be disabled until they verify their email
+     * address. For testing purpose, this property must be dependent upon the
+     * current Node environment.
+     *
+     * The emailVerified property will be defined as expected.
+     */
+    data.disabled = this.app.get('node_env') === 'production'
     data.emailVerified = false
 
     if (!data.photoURL) {

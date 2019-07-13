@@ -71,8 +71,12 @@ module.exports = {
    * @returns {BadRequest | NotAuthenticated}
    */
   get_model_error: (message, errors, auth = false) => {
-    const e = { value: errors[0].context.value || null }
-    return auth ? new NotAuthenticated(message, e) : new BadRequest(message, e)
+    const { key, value } = errors[0].context
+    const e = {}
+    e[key] = value
+
+    if (auth) return new NotAuthenticated(message, { errors: { ...e } })
+    return new BadRequest(message, { errors: { ...e } })
   },
 
   /**
