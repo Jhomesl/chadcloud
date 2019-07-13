@@ -1,6 +1,6 @@
 // Firebase, global service hooks, models, services, and utility functions
 const Firebase = require('./firebase')
-const hooks = require('./hooks/global.hooks')
+const hooks = require('./hooks/app.hooks')
 const models = require('./models')
 const services = require('./services')
 const utilities = require('./util')

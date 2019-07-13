@@ -27,7 +27,7 @@ const { get_model_error } = require('../util').error
  * @property {string} photoURL
  * @property {string} premium
  * @property {string} query,
- * 
+ *
  */
 const messages = {
   birthday: 'Birthday is required and should be in a valid ISO 8601 date format. Users must be at least 16 years old.',
@@ -92,7 +92,7 @@ module.exports = {
       email: email.error(errors.email),
       page: string.error(errors.page_token),
       id_token: string.required().error(errors.id_token),
-      results: number.min(0).max(1000).default(1000).error(errors.page_results),
+      results: number.min(0).max(1000).default(1000).error(errors.page_results)
     }).required().error(errors.query, { self: true })
   }),
   get: Joi.object().keys({ query: AuthenticatedQuery }),

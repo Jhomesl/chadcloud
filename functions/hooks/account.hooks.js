@@ -17,6 +17,6 @@ module.exports = {
     get: async context => precheck(context, 'account', 'get', true),
     patch: async context => precheck(context, 'account', 'patch', true),
     update: async context => precheck(context, 'account', 'update', true),
-    remove: async context => precheck(context, 'account', 'remove', true),
+    remove: async context => precheck(context, 'account', 'remove', true)
   }
 }

@@ -51,7 +51,7 @@ module.exports = {
 
   /**
    * Validates query and payload schema.
-   * 
+   *
    * @param {Feathers.Context} context - Feathers context object
    * @param {object} context.data - Payload to validate
    * @param {object} context.params - Additional info for the service method
@@ -137,7 +137,7 @@ module.exports = {
    * Validates @see context.data and authenticates a user if @see auth is true.
    * If @see admin is true and @see auth is true, the function will check if the
    * user is an admin.
-   * 
+   *
    * @param {Feathers.Context} context - Feathers context object
    * @param {object} context.data - Payload to validate
    * @param {object} context.params - Additional info for the service method

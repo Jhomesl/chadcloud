@@ -1,6 +1,6 @@
 // Packages
 const {
-  BadGateway, BadRequest, Conflict, Forbidden, GeneralError, LengthRequired, NotAuthenticated, NotFound, NotImplemented, MethodNotAllowed, NotAcceptable, PaymentError, Timeout, TooManyRequests, Unavailable, Unprocessable
+  BadGateway, BadRequest, Conflict, Forbidden, GeneralError, LengthRequired, NotAuthenticated, NotFound, NotImplemented, PaymentError, MethodNotAllowed, NotAcceptable, Timeout, TooManyRequests, Unavailable, Unprocessable
 } = require('@feathersjs/errors')
 
 /**
@@ -26,89 +26,53 @@ module.exports = {
       throw new BadRequest('Error argument is required.')
     }
 
-    // Get message from error object or use provided string
-    const message = error instanceof Error ? error.message : error
-
     switch (status) {
       case 400:
-        error = new BadRequest(message, data)
-        break
+        return new BadRequest(error, data)
       case 401:
-        error = new NotAuthenticated(message, data)
-        break
+        return new NotAuthenticated(error, data)
       case 402:
-        error = new PaymentError(message, data)
-        break
+        return new PaymentError(error, data)
       case 403:
-        error = new Forbidden(message, data)
-        break
+        return new Forbidden(error, data)
       case 404:
-        error = new NotFound(message, data)
-        break
+        return new NotFound(error, data)
       case 405:
-        error = new MethodNotAllowed(message, data)
-        break
+        return new MethodNotAllowed(error, data)
       case 406:
-        error = new NotAcceptable(message, data)
-        break
+        return new NotAcceptable(error, data)
       case 408:
-        error = new Timeout(message, data)
-        break
+        return new Timeout(error, data)
       case 409:
-        error = new Conflict(message, data)
-        break
+        return new Conflict(error, data)
       case 411:
-        error = new LengthRequired(message, data)
-        break
+        return new LengthRequired(error, data)
       case 422:
-        error = new Unprocessable(message, data)
-        break
+        return new Unprocessable(error, data)
       case 429:
-        error = new TooManyRequests(message, data)
-        break
+        return new TooManyRequests(error, data)
       case 501:
-        error = new NotImplemented(message, data)
-        break
+        return new NotImplemented(error, data)
       case 502:
-        error = new BadGateway(message, data)
-        break
+        return new BadGateway(error, data)
       case 503:
-        error = new Unavailable(message, data)
-        break
+        return new Unavailable(error, data)
       default:
-        error = new GeneralError(message, data)
+        return new GeneralError(error, data)
     }
-
-    return error
   },
 
   /**
-   * Handles a service method error.
+   * Transform a Joi schema error to a Feathers error.
    *
-   * @todo Implement error reporting. If report is true, an error will be thrown
-   * @param {Feathers.Context} context - Feathers context object
-   * @param {boolean} report - If true, send error report. Defaults to false
-   * @returns {Feathers.Context} Feathers context object
-   * @throws {BadRequest | NotImplemented} If missing context
+   * @param {string} message - Error message
+   * @param {Error[]} errors - Array of Joi errors
+   * @param {boolean} auth - True if error should be type NotAuthenticated
+   * @returns {BadRequest | NotAuthenticated}
    */
-  handle_service_error: async (context, report = false) => {
-    if (!context) throw new BadRequest('Feathers context is required.')
-
-    if (context.error.name === 'Error') {
-      const { name, message, code, className, data, errors } = context.error
-      context.error = new BadRequest(message.includes('data object must be provided') ? 'Payload required.' : message, { data, errors })
-    }
-
-    const { name, message, code, className, data, errors } = context.error
-
-    console.error(`${name}: ${message} ->`, { data, errors })
-
-    if (report) {
-      // TODO: Send error report to error service
-      throw new NotImplemented('Error reporting in progress.')
-    }
-
-    return context
+  get_model_error: (message, errors, auth = false) => {
+    const e = { value: errors[0].context.value || null }
+    return auth ? new NotAuthenticated(message, e) : new BadRequest(message, e)
   },
 
   /**
@@ -123,15 +87,33 @@ module.exports = {
   },
 
   /**
-   * Transform a Joi schema error to a Feathers error.
+   * Handles a service method error.
    *
-   * @param {string} message - Error message
-   * @param {Error[]} errors - Array of Joi errors
-   * @param {boolean} auth - True if error should be type NotAuthenticated
-   * @returns {BadRequest | NotAuthenticated}
+   * @todo Implement error reporting. If report is true, an error will be thrown
+   * @param {Feathers.Context} context - Feathers context object
+   * @param {boolean} report - If true, send error report. Defaults to false
+   * @returns {Feathers.Context} Feathers context object
+   * @throws {BadRequest | NotImplemented} If missing context
    */
-  get_model_error: (message, errors, auth = false) => {
-    const e = { value: errors[0].context.value || null }
-    return auth ? new NotAuthenticated(message, e) : new BadRequest(message, e)
+  service_error: async (context, report = false) => {
+    if (!context) throw new BadRequest('Feathers context is required.')
+
+    if (context.error.name === 'Error') {
+      let { message, data, errors } = context.error
+      context.error = new BadRequest(message.includes('data object must be provided') ? 'Payload required.' : message, { data, errors })
+    }
+
+    const { name, message, code, className, data, errors } = context.error
+
+    console.error(`${name} error on path /${context.path}: ${message} ->`, {
+      code, name, message, className, data, errors
+    })
+
+    if (report) {
+      // TODO: Send error report to error service
+      throw new NotImplemented('Error reporting in progress.')
+    }
+
+    return context
   }
 }

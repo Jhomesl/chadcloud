@@ -12,33 +12,53 @@ class Account {
   /**
    * Special service initialization method.
    *
+   * For services registered before app.listen is invoked, the setup function of
+   * each registered service is called on invoking app.listen. For services
+   * registered after app.listen is invoked, setup is called automatically by
+   * Feathers when a service is registered.
+   *
+   * setup is a great place to initialize your service with any special
+   * configuration or if connecting services that are very tightly coupled.
+   *
+   * @see {@link https://docs.feathersjs.com/api/services.html#setupapp-path}
+   *
    * @param {Feathers.Application} app - Feathers application
-   * @param {string} path - Name of Firebase database
-   * @returns {undefined}
+   * @param {string} path - Path service was registered on without the '/'
+   * @returns {Promise}
    */
   setup(app, path) {
+    /**
+     * @property {feathers.Application} app - Current Feathers application
+     * @instance
+     */
     this.app = app
+
+    /**
+     * @property {string} path - Path service was registered on without the '/'
+     * @instance
+     */
     this.path = path
 
-    // Firebase Authentication interface
+    /**
+     * @property {firebase.auth.Auth} authentication - Firebase Auth interface
+     * @instance
+     */
     this.authentication = this.app.get('firebase/admin').auth()
 
-    // Utilities
+    /**
+     * @property {object} utilities - Utility functions
+     * @instance
+     */
     this.utilities = this.app.get('utilities')
 
-    // Node environment
-    this.environment = this.app.get('node_env')
-
-    if (this.environment === 'development') {
+    if (this.app.get('node_env') === 'development') {
       const url = `http://localhost:${this.app.get('ports').accounts}`
       console.info(`Initialized Account service on ${url}/${path}.`)
     }
   }
 
   /**
-   * Creates a new account using email and password. @see data.uid will be used
-   * as the user's username. The user will be disabled until they verify their
-   * email address.
+   * Creates a new account via email/password.
    *
    * @async
    * @param {admin.auth.CreateRequest} data - New account data
@@ -46,9 +66,7 @@ class Account {
    * @param {string} data.email - The user's email address
    * @param {string} data.password - The user's account password
    * @param {string | null} data.photoURL - The user's photo url
-   * @param {string} data.uid - Username
    * @param {object} params - Additional information for the service method
-   * @param {object} params.query - Query parameters
    * @returns {Promise<object>} New user record
    * @throws {BadRequest}
    */
@@ -56,8 +74,11 @@ class Account {
     // ! New user will be disabled until they verify their email
     data.disabled = true
     data.emailVerified = false
-    data.photoURL = data.photoURL && data.photoURL.length
-      ? data.photoURL : `https://api.adorable.io/avatars/285/${data.uid}`
+
+    if (!data.photoURL) {
+      const name = data.displayName.replace(' ', '%20')
+      data.photoURL = `https://api.adorable.io/avatars/285/${name}`
+    }
 
     try {
       return (await this.authentication.createUser(data)).toJSON()

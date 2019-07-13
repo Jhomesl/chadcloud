@@ -1,6 +1,6 @@
 /**
- * @file Documentation service hooks
- * @module hooks/documentation
+ * @file Cloud Function Trigger utilities
+ * @module utilities/triggers
  * @author Lexus Drumgold <lex@lexusdrumgold.design>
  */
 

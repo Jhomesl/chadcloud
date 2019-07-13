@@ -1,8 +1,5 @@
-// Hooks
-const hooks = require('../hooks/documentation.hooks')
-
 /**
- * Generates API documentation.
+ * Generates Chad Cloud API documentation.
  *
  * @class Documentation
  * @author Lexus Drumgold <lex@lexusdrumgold.design>
@@ -40,10 +37,4 @@ class Documentation {
   }
 }
 
-module.exports = app => {
-  const { docs } = app.get('routes')
-
-  // Initialize route and add hooks
-  app.use(docs, new Documentation())
-  app.service(docs).hooks(hooks)
-}
+module.exports = app => app.use(app.get('routes').docs, new Documentation())

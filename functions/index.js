@@ -9,6 +9,10 @@ const { ENVRIONMENT, PRODUCTION } = require('./constants')
 
 /**
  * @file Cloud Functions entry point
+ *
+ * @todo Implement @see @module utilities/auth
+ * @todo Implement @see @module utilities/triggers
+ *
  * @module functions
  * @author Lexus Drumgold <lex@lexusdrumgold.design>
  */

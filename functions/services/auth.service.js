@@ -12,54 +12,50 @@ const hooks = require('../hooks/auth.hooks')
  */
 class Authentication {
   /**
-   * Initializes the Authentication service.
+   * Special service initialization method.
+   *
+   * For services registered before app.listen is invoked, the setup function of
+   * each registered service is called on invoking app.listen. For services
+   * registered after app.listen is invoked, setup is called automatically by
+   * Feathers when a service is registered.
+   *
+   * setup is a great place to initialize your service with any special
+   * configuration or if connecting services that are very tightly coupled.
+   *
+   * @see {@link https://docs.feathersjs.com/api/services.html#setupapp-path}
    *
    * @param {Feathers.Application} app - Feathers application
-   * @param {string} path - Name of Firebase database
-   * @returns {Authentication}
+   * @param {string} path - Path service was registered on without the '/'
+   * @returns {Promise}
    */
   setup(app, path) {
+    /**
+     * @property {feathers.Application} app - Current Feathers application
+     * @instance
+     */
     this.app = app
+
+    /**
+     * @property {string} path - Path service was registered on without the '/'
+     * @instance
+     */
     this.path = path
 
-    // Firebase Authentication interface
-    this.authentication = app.get('firebase/admin').auth()
+    /**
+     * @property {firebase.auth.Auth} authentication - Firebase Auth interface
+     * @instance
+     */
+    this.authentication = this.app.get('firebase/admin').auth()
 
-    // API key
-    this.api_key = this.app.get('firebase').apiKey
-
-    // Utilities
+    /**
+     * @property {object} utilities - Utility functions
+     * @instance
+     */
     this.utilities = this.app.get('utilities')
 
-    // Node environment
-    this.environment = this.app.get('node_env')
-
-    if (this.environment === 'development') {
+    if (this.app.get('node_env') === 'development') {
       const url = `http://localhost:${this.app.get('ports').authentication}`
       console.info(`Initialized Authentication service on ${url}/${path}.`)
-    }
-  }
-
-  /**
-   * Generates a custom token for the user associated with @see @param data .
-   *
-   * @async
-   * @param {string} data - UID of user to create custom token for
-   * @param {object} params.query - Query parameters
-   * @param {object} params.query.token  - Firebase id token of user to generate
-   * custom login token for
-   * @param {string} params.user.uid - If defined, a custom login token will be
-   * created for the user.
-   * @returns {Promise<object>}
-   * @throws {NotAuthenticated}
-   */
-  async create(data, params) {
-    const { create_custom_token } = this.utilities.auth
-
-    try {
-      return await create_custom_token(this.authentication, params.user.uid)
-    } catch (err) {
-      throw err
     }
   }
 

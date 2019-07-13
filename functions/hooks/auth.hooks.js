@@ -9,19 +9,8 @@
 
 module.exports = {
   before: {
-    create: async context => {
-      const utilities = context.app.get('utilities')
-      const { authenticate } = utilities.context
-
-      try {
-        return await authenticate(context, false)
-      } catch (err) {
-        throw err
-      }
-    },
     remove: async context => {
-      const utilities = context.app.get('utilities')
-      const { authenticate } = utilities.context
+      const { authenticate } = context.app.get('utilities').context
 
       try {
         return await authenticate(context, false)

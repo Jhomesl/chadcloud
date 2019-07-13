@@ -2,7 +2,7 @@
 const Joi = require('joi')
 
 // Global schema
-const { boolean, date, email, string, url } = require('./global.model')
+const { string } = require('./global.model')
 
 // Utilities
 const { get_model_error } = require('../util').error
@@ -30,11 +30,10 @@ const errors = {
 }
 
 const AuthenticatedQuery = Joi.object().keys({
-  id_token: string.required().error(errors.id_token),
+  id_token: string.required().error(errors.id_token)
 }).required().error(errors.query, { self: true })
 
 module.exports = {
   create: Joi.object().keys({ query: AuthenticatedQuery }),
   remove: Joi.object().keys({ query: AuthenticatedQuery })
 }
-
